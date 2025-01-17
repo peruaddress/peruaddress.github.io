@@ -1,1217 +1,178 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
+
 <head>
-    <meta charset="UTF-8">
-    <title>System Error</title>
-    <meta name="robots" content="noindex,nofollow" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <style>
-        /* Base */
-        body {
-            color: #333;
-            font: 14px Verdana, "Helvetica Neue", helvetica, Arial, 'Microsoft YaHei', sans-serif;
-            margin: 0;
-            padding: 0 20px 20px;
-            word-break: break-word;
-        }
-        h1{
-            margin: 10px 0 0;
-            font-size: 28px;
-            font-weight: 500;
-            line-height: 32px;
-        }
-        h2{
-            color: #4288ce;
-            font-weight: 400;
-            padding: 6px 0;
-            margin: 6px 0 0;
-            font-size: 18px;
-            border-bottom: 1px solid #eee;
-        }
-        h3.subheading {
-            color: #4288ce;
-            margin: 6px 0 0;
-            font-weight: 400;
-        }
-        h3{
-            margin: 12px;
-            font-size: 16px;
-            font-weight: bold;
-        }
-        abbr{
-            cursor: help;
-            text-decoration: underline;
-            text-decoration-style: dotted;
-        }
-        a{
-            color: #868686;
-            cursor: pointer;
-        }
-        a:hover{
-            text-decoration: underline;
-        }
-        .line-error{
-            background: #f8cbcb;
-        }
-
-        .echo table {
-            width: 100%;
-        }
-
-        .echo pre {
-            padding: 16px;
-            overflow: auto;
-            font-size: 85%;
-            line-height: 1.45;
-            background-color: #f7f7f7;
-            border: 0;
-            border-radius: 3px;
-            font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
-        }
-
-        .echo pre > pre {
-            padding: 0;
-            margin: 0;
-        }
-        /* Layout */
-        .col-md-3 {
-            width: 25%;
-        }
-        .col-md-9 {
-            width: 75%;
-        }
-        [class^="col-md-"] {
-            float: left;
-        }
-        .clearfix {
-            clear:both;
-        }
-        @media only screen 
-        and (min-device-width : 375px) 
-        and (max-device-width : 667px) { 
-            .col-md-3,
-            .col-md-9 {
-                width: 100%;
-            }
-        }
-        /* Exception Info */
-        .exception {
-            margin-top: 20px;
-        }
-        .exception .message{
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-bottom: 0 none;
-            line-height: 18px;
-            font-size:16px;
-            border-top-left-radius: 4px;
-            border-top-right-radius: 4px;
-            font-family: Consolas,"Liberation Mono",Courier,Verdana,"微软雅黑";
-        }
-
-        .exception .code{
-            float: left;
-            text-align: center;
-            color: #fff;
-            margin-right: 12px;
-            padding: 16px;
-            border-radius: 4px;
-            background: #999;
-        }
-        .exception .source-code{
-            padding: 6px;
-            border: 1px solid #ddd;
-
-            background: #f9f9f9;
-            overflow-x: auto;
-
-        }
-        .exception .source-code pre{
-            margin: 0;
-        }
-        .exception .source-code pre ol{
-            margin: 0;
-            color: #4288ce;
-            display: inline-block;
-            min-width: 100%;
-            box-sizing: border-box;
-        font-size:14px;
-            font-family: "Century Gothic",Consolas,"Liberation Mono",Courier,Verdana;
-            padding-left: 64px;
-        }
-        .exception .source-code pre li{
-            border-left: 1px solid #ddd;
-            height: 18px;
-            line-height: 18px;
-        }
-        .exception .source-code pre code{
-            color: #333;
-            height: 100%;
-            display: inline-block;
-            border-left: 1px solid #fff;
-        font-size:14px;
-            font-family: Consolas,"Liberation Mono",Courier,Verdana,"微软雅黑";
-        }
-        .exception .trace{
-            padding: 6px;
-            border: 1px solid #ddd;
-            border-top: 0 none;
-            line-height: 16px;
-        font-size:14px;
-            font-family: Consolas,"Liberation Mono",Courier,Verdana,"微软雅黑";
-        }
-        .exception .trace ol{
-            margin: 12px;
-        }
-        .exception .trace ol li{
-            padding: 2px 4px;
-        }
-        .exception div:last-child{
-            border-bottom-left-radius: 4px;
-            border-bottom-right-radius: 4px;
-        }
-
-        /* Exception Variables */
-        .exception-var table{
-            width: 100%;
-            margin: 12px 0;
-            box-sizing: border-box;
-            table-layout:fixed;
-            word-wrap:break-word;            
-        }
-        .exception-var table caption{
-            text-align: left;
-            font-size: 16px;
-            font-weight: bold;
-            padding: 6px 0;
-        }
-        .exception-var table caption small{
-            font-weight: 300;
-            display: inline-block;
-            margin-left: 10px;
-            color: #ccc;
-        }
-        .exception-var table tbody{
-            font-size: 13px;
-            font-family: Consolas,"Liberation Mono",Courier,"微软雅黑";
-        }
-        .exception-var table td{
-            padding: 0 6px;
-            vertical-align: top;
-            word-break: break-all;
-        }
-        .exception-var table td:first-child{
-            width: 28%;
-            font-weight: bold;
-            white-space: nowrap;
-        }
-        .exception-var table td pre{
-            margin: 0;
-        }
-
-        /* Copyright Info */
-        .copyright{
-            margin-top: 24px;
-            padding: 12px 0;
-            border-top: 1px solid #eee;
-        }
-
-        /* SPAN elements with the classes below are added by prettyprint. */
-        pre.prettyprint .pln { color: #000 }  /* plain text */
-        pre.prettyprint .str { color: #080 }  /* string content */
-        pre.prettyprint .kwd { color: #008 }  /* a keyword */
-        pre.prettyprint .com { color: #800 }  /* a comment */
-        pre.prettyprint .typ { color: #606 }  /* a type name */
-        pre.prettyprint .lit { color: #066 }  /* a literal value */
-        /* punctuation, lisp open bracket, lisp close bracket */
-        pre.prettyprint .pun, pre.prettyprint .opn, pre.prettyprint .clo { color: #660 }
-        pre.prettyprint .tag { color: #008 }  /* a markup tag name */
-        pre.prettyprint .atn { color: #606 }  /* a markup attribute name */
-        pre.prettyprint .atv { color: #080 }  /* a markup attribute value */
-        pre.prettyprint .dec, pre.prettyprint .var { color: #606 }  /* a declaration; a variable name */
-        pre.prettyprint .fun { color: red }  /* a function name */
-    </style>
+        <link rel="canonical" href="https://peruaddress.github.io/html/category/article-14938.htm" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <!-- Webpage Title -->
+    <title>丹阳犬类收容中心（丹阳犬类收容中心电话）</title>
+        <meta name="description" content="摘要：       今天给各位分享丹阳犬类收容中心的知识，其中也会对丹阳犬类收容中心电话进行解释，如果能碰巧解决你现在面临的问题，别忘了关注本站，现在开始吧！本文目录一览：1、哪里有领养流浪猫流浪狗." />
+        <link rel="icon" href="/assets/website/img/peruaddress/favicon.ico" type="image/x-icon"/>
+    <!-- Styles -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="/assets/website/css/peruaddress/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/website/css/peruaddress/fontawesome-all.min.css" rel="stylesheet">
+    <link href="/assets/website/css/peruaddress/swiper.css" rel="stylesheet">
+    <link href="/assets/website/css/peruaddress/styles.css" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/website/css/style.css">
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4c690a1131a9998e7438244de25a50c5";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3332997411212854"
+     crossorigin="anonymous"></script>
 </head>
-<body>
-    <div class="echo">
-            </div>
-        <div class="exception">
-    <div class="message">
-        
-            <div class="info">
-                <div>
-                    <h2>[0]&nbsp;<abbr title="think\exception\TemplateNotFoundException">TemplateNotFoundException</abbr> in <a class="toggle" title="E:\SVNRepositories\AddressBaseGitPages\thinkphp\library\think\Template.php line 1074">Template.php line 1074</a></h2>
-                </div>
-                <div><h1>模板文件不存在:</h1></div>
-            </div>
-        
-    </div>
-	        <div class="source-code">
-            <pre class="prettyprint lang-php"><ol start="1065"><li class="line-1065"><code>            }
-</code></li><li class="line-1066"><code>            $template = realpath($path . $template . '.' . ltrim($this-&gt;config['view_suffix'], '.'));
-</code></li><li class="line-1067"><code>        }
-</code></li><li class="line-1068"><code>
-</code></li><li class="line-1069"><code>        if (is_file($template)) {
-</code></li><li class="line-1070"><code>            // 记录模板文件的更新时间
-</code></li><li class="line-1071"><code>            $this-&gt;includeFile[$template] = filemtime($template);
-</code></li><li class="line-1072"><code>            return $template;
-</code></li><li class="line-1073"><code>        } else {
-</code></li><li class="line-1074"><code>            throw new TemplateNotFoundException('template not exists:' . $template, $template);
-</code></li><li class="line-1075"><code>        }
-</code></li><li class="line-1076"><code>    }
-</code></li><li class="line-1077"><code>
-</code></li><li class="line-1078"><code>    /**
-</code></li><li class="line-1079"><code>     * 按标签生成正则
-</code></li><li class="line-1080"><code>     * @access private
-</code></li><li class="line-1081"><code>     * @param  string $tagName 标签名
-</code></li><li class="line-1082"><code>     * @return string
-</code></li><li class="line-1083"><code>     */
-</code></li></ol></pre>
-        </div>
-	        <div class="trace">
-            <h2>Call Stack</h2>
-            <ol>
-                <li>in <a class="toggle" title="E:\SVNRepositories\AddressBaseGitPages\thinkphp\library\think\Template.php line 1074">Template.php line 1074</a></li>
-                                <li>
-                at <abbr title="think\Template">Template</abbr>->parseTemplateFile(<em>false</em>) in <a class="toggle" title="E:\SVNRepositories\AddressBaseGitPages\thinkphp\library\think\Template.php line 1034">Template.php line 1034</a>                </li>
-                                <li>
-                at <abbr title="think\Template">Template</abbr>->parseTemplateName('<a class="toggle" title="common/detail_content">common/detail_conten...</a>') in <a class="toggle" title="E:\SVNRepositories\AddressBaseGitPages\thinkphp\library\think\Template.php line 476">Template.php line 476</a>                </li>
-                                <li>
-                at <abbr title="think\Template">Template</abbr>->think\{closure}('<a class="toggle" title="&lt;!DOCTYPE html&gt;
-&lt;html lang=&quot;zh-CN&quot;&gt;
 
-&lt;head&gt;
-    {include file=&quot;peruaddress/common/scripts&quot;}
-&lt;/head&gt;
-
-&lt;body data-bs-spy=&quot;scroll&quot; data-bs-target=&quot;#navbarExample&quot; data-page=&quot;detail&quot;&gt;
-    {include file=&quot;peruaddress/common/header&quot;}
-    &lt;!-- Header --&gt;
-    &lt;header class=&quot;ex-header&quot;&gt;
-        &lt;div class=&quot;container&quot;&gt;
-            &lt;div class=&quot;row&quot;&gt;
-                &lt;div class=&quot;col-xl-10 offset-xl-1&quot;&gt;
-                    &lt;h1&gt;{$model['title']}&lt;/h1&gt;
-                    &lt;div class=&quot;section-title&quot;&gt;
-                        &lt;a href=&quot;/&quot;&gt;首页&lt;/a&gt; / &lt;a href=&quot;{$category_model['url']}&quot;&gt;{$category_model['name']}&lt;/a&gt; / &lt;span&gt;正文&lt;/span&gt;
-                    &lt;/div&gt;
-                &lt;/div&gt; &lt;!-- end of col --&gt;
-            &lt;/div&gt; &lt;!-- end of row --&gt;
-        &lt;/div&gt; &lt;!-- end of container --&gt;
-    &lt;/header&gt; &lt;!-- end of ex-header --&gt;
-    &lt;!-- end of header --&gt;
-    &lt;!-- Details 1 --&gt;
-    &lt;div id=&quot;details&quot; class=&quot;basic-1&quot;&gt;
-        &lt;div class=&quot;container&quot;&gt;
-            &lt;div class=&quot;row&quot;&gt;
-                &lt;div class=&quot;col-md-9&quot;&gt;
-                    {include file=&quot;common/detail_content&quot; /}
-                &lt;/div&gt;
-                &lt;div class=&quot;col-md-3&quot;&gt;
-                    {include file=&quot;peruaddress/common/right&quot;}
-                &lt;/div&gt;
-            &lt;/div&gt;
-        &lt;/div&gt; &lt;!-- end of container --&gt;
-    &lt;/div&gt; &lt;!-- end of basic-1 --&gt;
-    &lt;!-- end of details 1 --&gt;
-    
-    {include file=&quot;peruaddress/common/footer&quot;}
-&lt;/body&gt;
-
-&lt;/html&gt;">&lt;!DOCTYPE html&gt;
-&lt;ht...</a>') in <a class="toggle" title="E:\SVNRepositories\AddressBaseGitPages\thinkphp\library\think\Template.php line 492">Template.php line 492</a>                </li>
-                                <li>
-                at <abbr title="think\Template">Template</abbr>->parseInclude('<a class="toggle" title="&lt;!DOCTYPE html&gt;
-&lt;html lang=&quot;zh-CN&quot;&gt;
-
-&lt;head&gt;
-        &lt;link rel=&quot;canonical&quot; href=&quot;{$canonical}&quot; /&gt;
-    &lt;meta charset=&quot;utf-8&quot;&gt;
-    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no&quot;&gt;
-    &lt;!-- Webpage Title --&gt;
-    &lt;title&gt;{$seo_title}&lt;/title&gt;
-    {if $seo_keywords}
-    &lt;meta name=&quot;keywords&quot; content=&quot;{$seo_keywords}&quot; /&gt;
-    {/if}
-    {if $seo_description}
-    &lt;meta name=&quot;description&quot; content=&quot;{$seo_description}&quot; /&gt;
-    {/if}
-    &lt;link rel=&quot;icon&quot; href=&quot;/assets/website/img/{:$site_config['code']}/favicon.ico&quot; type=&quot;image/x-icon&quot;/&gt;
-    &lt;!-- Styles --&gt;
-    &lt;link href=&quot;https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;0,700;1,400&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
-    &lt;link href=&quot;/assets/website/css/{:$site_config['code']}/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
-    &lt;link href=&quot;/assets/website/css/{:$site_config['code']}/fontawesome-all.min.css&quot; rel=&quot;stylesheet&quot;&gt;
-    &lt;link href=&quot;/assets/website/css/{:$site_config['code']}/swiper.css&quot; rel=&quot;stylesheet&quot;&gt;
-    &lt;link href=&quot;/assets/website/css/{:$site_config['code']}/styles.css&quot; rel=&quot;stylesheet&quot;&gt;
-    &lt;link rel=&quot;stylesheet&quot; href=&quot;/assets/website/css/style.css&quot;&gt;
-    {$site_config['analytics_code']}
-    {$site_config['ad_code']}
-&lt;/head&gt;
-
-&lt;body data-bs-spy=&quot;scroll&quot; data-bs-target=&quot;#navbarExample&quot; data-page=&quot;detail&quot;&gt;
-        &lt;!-- Navigation --&gt;
-    &lt;nav id=&quot;navbarExample&quot; class=&quot;navbar navbar-expand-lg fixed-top navbar-light&quot; aria-label=&quot;Main navigation&quot;&gt;
-        &lt;div class=&quot;container&quot;&gt;
-            &lt;!-- Image Logo --&gt;
-            {if $page_code == 'index'}
-            &lt;a class=&quot;navbar-brand logo-image&quot; href=&quot;/&quot;&gt;
-                &lt;h1&gt;秘鲁地址生成&lt;/h1&gt;
-            &lt;/a&gt;
-            {else}
-            &lt;a class=&quot;navbar-brand logo-image&quot; href=&quot;/&quot;&gt;
+<body data-bs-spy="scroll" data-bs-target="#navbarExample" data-page="detail">
+        <!-- Navigation -->
+    <nav id="navbarExample" class="navbar navbar-expand-lg fixed-top navbar-light" aria-label="Main navigation">
+        <div class="container">
+            <!-- Image Logo -->
+                        <a class="navbar-brand logo-image" href="/">
                 秘鲁地址生成
-            &lt;/a&gt;
-            {/if}
-            &lt;!-- Text Logo - Use this if you don't have a graphic logo --&gt;
-            &lt;!-- &lt;a class=&quot;navbar-brand logo-text&quot; href=&quot;index.html&quot;&gt;Zinc&lt;/a&gt; --&gt;
-            &lt;button class=&quot;navbar-toggler p-0 border-0&quot; type=&quot;button&quot; id=&quot;navbarSideCollapse&quot; aria-label=&quot;Toggle navigation&quot;&gt;
-                &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
-            &lt;/button&gt;
-            &lt;div class=&quot;navbar-collapse offcanvas-collapse&quot; id=&quot;navbarsExampleDefault&quot;&gt;
-                &lt;ul class=&quot;navbar-nav ms-auto navbar-nav-scroll&quot;&gt;
-                    {volist name=&quot;menu_list&quot; id=&quot;item&quot;}
-                    &lt;li class=&quot;nav-item&quot;&gt;
-                        &lt;a class=&quot;nav-link&quot; href=&quot;{$item['url']}&quot;&gt;{$item['name']}&lt;/a&gt;
-                    &lt;/li&gt;
-                    {/volist}
-                    &lt;li class=&quot;nav-item&quot;&gt;
-                        &lt;a class=&quot;nav-link&quot; href=&quot;#&quot;&gt;关于&lt;/a&gt;
-                    &lt;/li&gt;
-                    &lt;li class=&quot;nav-item&quot;&gt;
-                        &lt;a class=&quot;nav-link&quot; href=&quot;#&quot;&gt;联系&lt;/a&gt;
-                    &lt;/li&gt;
-                &lt;/ul&gt;
-            &lt;/div&gt; &lt;!-- end of navbar-collapse --&gt;
-        &lt;/div&gt; &lt;!-- end of container --&gt;
-    &lt;/nav&gt; &lt;!-- end of navbar --&gt;
-    &lt;!-- end of navigation --&gt;
-    &lt;!-- Header --&gt;
-    &lt;header class=&quot;ex-header&quot;&gt;
-        &lt;div class=&quot;container&quot;&gt;
-            &lt;div class=&quot;row&quot;&gt;
-                &lt;div class=&quot;col-xl-10 offset-xl-1&quot;&gt;
-                    &lt;h1&gt;{$model['title']}&lt;/h1&gt;
-                    &lt;div class=&quot;section-title&quot;&gt;
-                        &lt;a href=&quot;/&quot;&gt;首页&lt;/a&gt; / &lt;a href=&quot;{$category_model['url']}&quot;&gt;{$category_model['name']}&lt;/a&gt; / &lt;span&gt;正文&lt;/span&gt;
-                    &lt;/div&gt;
-                &lt;/div&gt; &lt;!-- end of col --&gt;
-            &lt;/div&gt; &lt;!-- end of row --&gt;
-        &lt;/div&gt; &lt;!-- end of container --&gt;
-    &lt;/header&gt; &lt;!-- end of ex-header --&gt;
-    &lt;!-- end of header --&gt;
-    &lt;!-- Details 1 --&gt;
-    &lt;div id=&quot;details&quot; class=&quot;basic-1&quot;&gt;
-        &lt;div class=&quot;container&quot;&gt;
-            &lt;div class=&quot;row&quot;&gt;
-                &lt;div class=&quot;col-md-9&quot;&gt;
-                    {include file=&quot;common/detail_content&quot; /}
-                &lt;/div&gt;
-                &lt;div class=&quot;col-md-3&quot;&gt;
-                    {include file=&quot;peruaddress/common/right&quot;}
-                &lt;/div&gt;
-            &lt;/div&gt;
-        &lt;/div&gt; &lt;!-- end of container --&gt;
-    &lt;/div&gt; &lt;!-- end of basic-1 --&gt;
-    &lt;!-- end of details 1 --&gt;
-    
-    {include file=&quot;peruaddress/common/footer&quot;}
-&lt;/body&gt;
+            </a>
+                        <!-- Text Logo - Use this if you don't have a graphic logo -->
+            <!-- <a class="navbar-brand logo-text" href="index.html">Zinc</a> -->
+            <button class="navbar-toggler p-0 border-0" type="button" id="navbarSideCollapse" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
+                <ul class="navbar-nav ms-auto navbar-nav-scroll">
+                                        <li class="nav-item">
+                        <a class="nav-link" href="/">首页</a>
+                    </li>
+                                        <li class="nav-item">
+                        <a class="nav-link" href="/html/category/">文章分类</a>
+                    </li>
+                                        <li class="nav-item">
+                        <a class="nav-link" href="#">关于</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">联系</a>
+                    </li>
+                </ul>
+            </div> <!-- end of navbar-collapse -->
+        </div> <!-- end of container -->
+    </nav> <!-- end of navbar -->
+    <!-- end of navigation -->
+    <!-- Header -->
+    <header class="ex-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-10 offset-xl-1">
+                    <h1>丹阳犬类收容中心（丹阳犬类收容中心电话）</h1>
+                    <div class="section-title">
+                        <a href="/">首页</a> / <a href="/html/category/">文章分类</a> / <span>正文</span>
+                    </div>
+                </div> <!-- end of col -->
+            </div> <!-- end of row -->
+        </div> <!-- end of container -->
+    </header> <!-- end of ex-header -->
+    <!-- end of header -->
+    <!-- Details 1 -->
+    <div id="details" class="basic-1">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-9">
+                        <div class="news">
+                                <div class="article-zhaiyao">       <strong><img src="http://www.to3158.cn/zb_users/theme/koilee/style/images/favicon_example.ico" alt="丹阳犬类收容中心（丹阳犬类收容中心电话）">摘要：</strong>       今天给各位分享丹阳犬类收容中心的知识，其中也会对丹阳犬类收容中心电话进行解释，如果能碰巧解决你现在面临的问题，别忘了关注本站，现在开始吧！本文目录一览：1、哪里有领养流浪猫流浪狗...    </div>    <p>今天给各位分享丹阳犬类收容中心的知识，其中也会对丹阳犬类收容中心电话进行解释，如果能碰巧解决你现在面临的问题，别忘了关注本站，现在开始吧！</p><div style="text-align:center;"><img style="max-width: 100%;" alt="丹阳犬类收容中心（丹阳犬类收容中心电话）" src="https://img2.baidu.com/it/u=2441369266,1125890403&fm=253&fmt=auto&app=138&f=JPEG?w=750&h=500"></div><div><div style="color:#999;text-align:center;">（图片来源网络，侵删）</div></div><h2>本文目录一览：</h2><ul><li style='margin-bottom: 3px;list-style: none'> 1、哪里有领养流浪猫流浪狗的地方? </li> <li style='margin-bottom: 3px;list-style: none'> 2、犬类收容中心怎么处理狗 </li> <li style='margin-bottom: 3px;list-style: none'> 3、丹阳市抓狗大队地址 </li> </ul><h2 id='哪里有领养流浪猫流浪狗的地方?'>哪里有领养流浪猫流浪狗的地方?</h2> <p>北京有很多救助流浪猫狗的地方，以下是一些建议： 北京流浪动物救助中心：位于北京市朝阳区，是一个专门救助和收养流浪猫狗的机构。他们提供流浪动物的医疗救助、收养和领养等服务。你可以联系他们寻求帮助。</p><p>至善之家流浪小动物救助基地 至善之家流浪小动物救助基地，成立于2009年年初，是由民间众多爱心人士组成的非营利性小动物救助机构。从救助站成立到现在救助了小动物无数，并且为大部分小动物找到了领养家庭。</p><p>北京有很多地方可以领养小猫，以下是几个常见的途径： 动物收养中心：北京市有多家动物收养中心，如北京流浪动物救助中心、北京动物园等，这些机构会定期举办领养活动，提供健康的小猫供人领养。</p><p>重庆有很多收养流浪宠物的地方，以下是一些建议： 重庆流浪动物救助中心：致力于收养和救助流浪动物，提供临时庇护和医疗救助。联系方式：电话：023-12345678。</p><div style="text-align:center;"><img style="max-width: 100%;" alt="丹阳犬类收容中心（丹阳犬类收容中心电话）" src="https://img2.baidu.com/it/u=3945687867,2706781622&fm=253&fmt=auto&app=138&f=JPEG?w=744&h=500"></div><div><div style="color:#999;text-align:center;">（图片来源网络，侵删）</div></div><p>北京流浪动物救助中心：地址在北京市昌平区小汤山，电话为（010）61791908。这个中心救助了很多流浪猫狗，但请注意，需要确认其是否还在正常经营。杨培流浪猫之家：地址在朝阳区北京像素小区，电话未知。</p><h2 id='犬类收容中心怎么处理狗'>犬类收容中心怎么处理狗</h2> <p>1、在犬类收容中心，他们通常会根据狗的健康状况、性格和可适应性来处理狗。 首先，犬类收容中心会对每只狗进行身体检查和评估，确保它们没有传染性疾病或严重健康问题。</p><p>2、犬类收容中心会对收容的狗进行身体检查，提供适当的饮食和医疗，并对其进行必要的医疗检查和兽医护理，包括注射疫苗、卫生处理、驱虫、体检、治疗任何现有的医疗问题等。</p><p>3、灭菌处理：有些地方提供专门的服务，可以将狗的尸体进行灭菌处理，以减少传染病的风险。可以咨询当地的宠物医院或动物收容所了解相关信息。 送往动物收容所：如果无法自行处理狗的尸体，可以将其送往当地的动物收容所。</p><div style="text-align:center;"><img style="max-width: 100%;" alt="丹阳犬类收容中心（丹阳犬类收容中心电话）" src="https://img2.baidu.com/it/u=442373566,662549306&fm=253&fmt=auto&app=138&f=JPEG?w=281&h=500"></div><div><div style="color:#999;text-align:center;">（图片来源网络，侵删）</div></div><h2 id='丹阳市抓狗大队地址'>丹阳市抓狗大队地址</h2> <p>在手机中找到联系人应用。见到如下图所示的联系人窗口。输入“12345”接通政务服务热线进行咨询，这样就能获得当地抓狗大队的联系方式了。</p><p>可以直接打110。警方开展专项整治，加大对胜利路及周边城区主干道的巡查力度。区，开展不文明、违法养犬问题。整治，以有效消除养犬对社会治安和疫情防控的负面影响。狗扰民可以向公安部门处理；也可以向物业部门投诉。</p><p>有抓狗大队，是附属于公安机关的；如果想让抓狗大队来打无证犬，直接拨110举报就行了；因为举报的人较多，所以可能要等上段时间，不会应该是会处理的。报警电话是必须要有个处理结果的。</p><p>宁波市奉化区人民政府。国家级重点风景名胜区5A级旅游区——溪口，位于浙江省宁波市西南40公里的奉化区溪口镇，东靠武岭，南濒剡溪，北靠雪窦山，水绕山环，景色秀丽。溪口抓狗大队在宁波市奉化区人民政府。</p><p>联系当地的抓狗大队直接拨110举报就行了或者是可联系城管部门进行捕捉。</p><p>抓狗大队是专门负责处理流浪狗和狗类管理的机构，他们会采取措施来保护社区的安全和卫生。如果你遇到了流浪狗或有关狗类管理的问题，你可以联系当地的抓狗大队，他们会派人前往处理。</p><p>关于丹阳犬类收容中心和丹阳犬类收容中心电话的介绍到此就结束了，不知道你从中找到你需要的信息了吗 ？如果你还想了解更多这方面的信息，记得收藏关注本站。 </p>                          </div>
 
-&lt;/html&gt;">&lt;!DOCTYPE html&gt;
-&lt;ht...</a>') in <a class="toggle" title="E:\SVNRepositories\AddressBaseGitPages\thinkphp\library\think\Template.php line 373">Template.php line 373</a>                </li>
-                                <li>
-                at <abbr title="think\Template">Template</abbr>->parse('<a class="toggle" title="&lt;!DOCTYPE html&gt;
-&lt;html lang=&quot;zh-CN&quot;&gt;
+                        <div class="col-md-12 mt-5">
+                                                        <p>上一个：<a href="/html/category/article-14937.htm">动物疫苗新规定有哪些 动物疫苗新规定有哪些种类</a></p>
+                                                        <p>下一个：<a href="/html/category/article-14939.htm">有没有免费领养狗狗的网站 有没有免费领养狗狗的网站啊</a></p>
+                                                    </div>
 
-&lt;head&gt;
-        &lt;link rel=&quot;canonical&quot; href=&quot;{$canonical}&quot; /&gt;
-    &lt;meta charset=&quot;utf-8&quot;&gt;
-    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no&quot;&gt;
-    &lt;!-- Webpage Title --&gt;
-    &lt;title&gt;{$seo_title}&lt;/title&gt;
-    {if $seo_keywords}
-    &lt;meta name=&quot;keywords&quot; content=&quot;{$seo_keywords}&quot; /&gt;
-    {/if}
-    {if $seo_description}
-    &lt;meta name=&quot;description&quot; content=&quot;{$seo_description}&quot; /&gt;
-    {/if}
-    &lt;link rel=&quot;icon&quot; href=&quot;/assets/website/img/{:$site_config['code']}/favicon.ico&quot; type=&quot;image/x-icon&quot;/&gt;
-    &lt;!-- Styles --&gt;
-    &lt;link href=&quot;https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;0,700;1,400&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
-    &lt;link href=&quot;/assets/website/css/{:$site_config['code']}/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
-    &lt;link href=&quot;/assets/website/css/{:$site_config['code']}/fontawesome-all.min.css&quot; rel=&quot;stylesheet&quot;&gt;
-    &lt;link href=&quot;/assets/website/css/{:$site_config['code']}/swiper.css&quot; rel=&quot;stylesheet&quot;&gt;
-    &lt;link href=&quot;/assets/website/css/{:$site_config['code']}/styles.css&quot; rel=&quot;stylesheet&quot;&gt;
-    &lt;link rel=&quot;stylesheet&quot; href=&quot;/assets/website/css/style.css&quot;&gt;
-    {$site_config['analytics_code']}
-    {$site_config['ad_code']}
-&lt;/head&gt;
-
-&lt;body data-bs-spy=&quot;scroll&quot; data-bs-target=&quot;#navbarExample&quot; data-page=&quot;detail&quot;&gt;
-        &lt;!-- Navigation --&gt;
-    &lt;nav id=&quot;navbarExample&quot; class=&quot;navbar navbar-expand-lg fixed-top navbar-light&quot; aria-label=&quot;Main navigation&quot;&gt;
-        &lt;div class=&quot;container&quot;&gt;
-            &lt;!-- Image Logo --&gt;
-            {if $page_code == 'index'}
-            &lt;a class=&quot;navbar-brand logo-image&quot; href=&quot;/&quot;&gt;
-                &lt;h1&gt;秘鲁地址生成&lt;/h1&gt;
-            &lt;/a&gt;
-            {else}
-            &lt;a class=&quot;navbar-brand logo-image&quot; href=&quot;/&quot;&gt;
-                秘鲁地址生成
-            &lt;/a&gt;
-            {/if}
-            &lt;!-- Text Logo - Use this if you don't have a graphic logo --&gt;
-            &lt;!-- &lt;a class=&quot;navbar-brand logo-text&quot; href=&quot;index.html&quot;&gt;Zinc&lt;/a&gt; --&gt;
-            &lt;button class=&quot;navbar-toggler p-0 border-0&quot; type=&quot;button&quot; id=&quot;navbarSideCollapse&quot; aria-label=&quot;Toggle navigation&quot;&gt;
-                &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
-            &lt;/button&gt;
-            &lt;div class=&quot;navbar-collapse offcanvas-collapse&quot; id=&quot;navbarsExampleDefault&quot;&gt;
-                &lt;ul class=&quot;navbar-nav ms-auto navbar-nav-scroll&quot;&gt;
-                    {volist name=&quot;menu_list&quot; id=&quot;item&quot;}
-                    &lt;li class=&quot;nav-item&quot;&gt;
-                        &lt;a class=&quot;nav-link&quot; href=&quot;{$item['url']}&quot;&gt;{$item['name']}&lt;/a&gt;
-                    &lt;/li&gt;
-                    {/volist}
-                    &lt;li class=&quot;nav-item&quot;&gt;
-                        &lt;a class=&quot;nav-link&quot; href=&quot;#&quot;&gt;关于&lt;/a&gt;
-                    &lt;/li&gt;
-                    &lt;li class=&quot;nav-item&quot;&gt;
-                        &lt;a class=&quot;nav-link&quot; href=&quot;#&quot;&gt;联系&lt;/a&gt;
-                    &lt;/li&gt;
-                &lt;/ul&gt;
-            &lt;/div&gt; &lt;!-- end of navbar-collapse --&gt;
-        &lt;/div&gt; &lt;!-- end of container --&gt;
-    &lt;/nav&gt; &lt;!-- end of navbar --&gt;
-    &lt;!-- end of navigation --&gt;
-    &lt;!-- Header --&gt;
-    &lt;header class=&quot;ex-header&quot;&gt;
-        &lt;div class=&quot;container&quot;&gt;
-            &lt;div class=&quot;row&quot;&gt;
-                &lt;div class=&quot;col-xl-10 offset-xl-1&quot;&gt;
-                    &lt;h1&gt;{$model['title']}&lt;/h1&gt;
-                    &lt;div class=&quot;section-title&quot;&gt;
-                        &lt;a href=&quot;/&quot;&gt;首页&lt;/a&gt; / &lt;a href=&quot;{$category_model['url']}&quot;&gt;{$category_model['name']}&lt;/a&gt; / &lt;span&gt;正文&lt;/span&gt;
-                    &lt;/div&gt;
-                &lt;/div&gt; &lt;!-- end of col --&gt;
-            &lt;/div&gt; &lt;!-- end of row --&gt;
-        &lt;/div&gt; &lt;!-- end of container --&gt;
-    &lt;/header&gt; &lt;!-- end of ex-header --&gt;
-    &lt;!-- end of header --&gt;
-    &lt;!-- Details 1 --&gt;
-    &lt;div id=&quot;details&quot; class=&quot;basic-1&quot;&gt;
-        &lt;div class=&quot;container&quot;&gt;
-            &lt;div class=&quot;row&quot;&gt;
-                &lt;div class=&quot;col-md-9&quot;&gt;
-                    {include file=&quot;common/detail_content&quot; /}
-                &lt;/div&gt;
-                &lt;div class=&quot;col-md-3&quot;&gt;
-                    {include file=&quot;peruaddress/common/right&quot;}
-                &lt;/div&gt;
-            &lt;/div&gt;
-        &lt;/div&gt; &lt;!-- end of container --&gt;
-    &lt;/div&gt; &lt;!-- end of basic-1 --&gt;
-    &lt;!-- end of details 1 --&gt;
-    
-    {include file=&quot;peruaddress/common/footer&quot;}
-&lt;/body&gt;
-
-&lt;/html&gt;">&lt;!DOCTYPE html&gt;
-&lt;ht...</a>') in <a class="toggle" title="E:\SVNRepositories\AddressBaseGitPages\thinkphp\library\think\Template.php line 333">Template.php line 333</a>                </li>
-                                <li>
-                at <abbr title="think\Template">Template</abbr>->compiler('<a class="toggle" title="&lt;!DOCTYPE html&gt;
-&lt;html lang=&quot;zh-CN&quot;&gt;
-
-&lt;head&gt;
-        &lt;link rel=&quot;canonical&quot; href=&quot;{$canonical}&quot; /&gt;
-    &lt;meta charset=&quot;utf-8&quot;&gt;
-    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no&quot;&gt;
-    &lt;!-- Webpage Title --&gt;
-    &lt;title&gt;{$seo_title}&lt;/title&gt;
-    {if $seo_keywords}
-    &lt;meta name=&quot;keywords&quot; content=&quot;{$seo_keywords}&quot; /&gt;
-    {/if}
-    {if $seo_description}
-    &lt;meta name=&quot;description&quot; content=&quot;{$seo_description}&quot; /&gt;
-    {/if}
-    &lt;link rel=&quot;icon&quot; href=&quot;/assets/website/img/{:$site_config['code']}/favicon.ico&quot; type=&quot;image/x-icon&quot;/&gt;
-    &lt;!-- Styles --&gt;
-    &lt;link href=&quot;https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;0,700;1,400&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
-    &lt;link href=&quot;/assets/website/css/{:$site_config['code']}/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
-    &lt;link href=&quot;/assets/website/css/{:$site_config['code']}/fontawesome-all.min.css&quot; rel=&quot;stylesheet&quot;&gt;
-    &lt;link href=&quot;/assets/website/css/{:$site_config['code']}/swiper.css&quot; rel=&quot;stylesheet&quot;&gt;
-    &lt;link href=&quot;/assets/website/css/{:$site_config['code']}/styles.css&quot; rel=&quot;stylesheet&quot;&gt;
-    &lt;link rel=&quot;stylesheet&quot; href=&quot;/assets/website/css/style.css&quot;&gt;
-    {$site_config['analytics_code']}
-    {$site_config['ad_code']}
-&lt;/head&gt;
-
-&lt;body data-bs-spy=&quot;scroll&quot; data-bs-target=&quot;#navbarExample&quot; data-page=&quot;detail&quot;&gt;
-        &lt;!-- Navigation --&gt;
-    &lt;nav id=&quot;navbarExample&quot; class=&quot;navbar navbar-expand-lg fixed-top navbar-light&quot; aria-label=&quot;Main navigation&quot;&gt;
-        &lt;div class=&quot;container&quot;&gt;
-            &lt;!-- Image Logo --&gt;
-            {if $page_code == 'index'}
-            &lt;a class=&quot;navbar-brand logo-image&quot; href=&quot;/&quot;&gt;
-                &lt;h1&gt;秘鲁地址生成&lt;/h1&gt;
-            &lt;/a&gt;
-            {else}
-            &lt;a class=&quot;navbar-brand logo-image&quot; href=&quot;/&quot;&gt;
-                秘鲁地址生成
-            &lt;/a&gt;
-            {/if}
-            &lt;!-- Text Logo - Use this if you don't have a graphic logo --&gt;
-            &lt;!-- &lt;a class=&quot;navbar-brand logo-text&quot; href=&quot;index.html&quot;&gt;Zinc&lt;/a&gt; --&gt;
-            &lt;button class=&quot;navbar-toggler p-0 border-0&quot; type=&quot;button&quot; id=&quot;navbarSideCollapse&quot; aria-label=&quot;Toggle navigation&quot;&gt;
-                &lt;span class=&quot;navbar-toggler-icon&quot;&gt;&lt;/span&gt;
-            &lt;/button&gt;
-            &lt;div class=&quot;navbar-collapse offcanvas-collapse&quot; id=&quot;navbarsExampleDefault&quot;&gt;
-                &lt;ul class=&quot;navbar-nav ms-auto navbar-nav-scroll&quot;&gt;
-                    {volist name=&quot;menu_list&quot; id=&quot;item&quot;}
-                    &lt;li class=&quot;nav-item&quot;&gt;
-                        &lt;a class=&quot;nav-link&quot; href=&quot;{$item['url']}&quot;&gt;{$item['name']}&lt;/a&gt;
-                    &lt;/li&gt;
-                    {/volist}
-                    &lt;li class=&quot;nav-item&quot;&gt;
-                        &lt;a class=&quot;nav-link&quot; href=&quot;#&quot;&gt;关于&lt;/a&gt;
-                    &lt;/li&gt;
-                    &lt;li class=&quot;nav-item&quot;&gt;
-                        &lt;a class=&quot;nav-link&quot; href=&quot;#&quot;&gt;联系&lt;/a&gt;
-                    &lt;/li&gt;
-                &lt;/ul&gt;
-            &lt;/div&gt; &lt;!-- end of navbar-collapse --&gt;
-        &lt;/div&gt; &lt;!-- end of container --&gt;
-    &lt;/nav&gt; &lt;!-- end of navbar --&gt;
-    &lt;!-- end of navigation --&gt;
-    &lt;!-- Header --&gt;
-    &lt;header class=&quot;ex-header&quot;&gt;
-        &lt;div class=&quot;container&quot;&gt;
-            &lt;div class=&quot;row&quot;&gt;
-                &lt;div class=&quot;col-xl-10 offset-xl-1&quot;&gt;
-                    &lt;h1&gt;{$model['title']}&lt;/h1&gt;
-                    &lt;div class=&quot;section-title&quot;&gt;
-                        &lt;a href=&quot;/&quot;&gt;首页&lt;/a&gt; / &lt;a href=&quot;{$category_model['url']}&quot;&gt;{$category_model['name']}&lt;/a&gt; / &lt;span&gt;正文&lt;/span&gt;
-                    &lt;/div&gt;
-                &lt;/div&gt; &lt;!-- end of col --&gt;
-            &lt;/div&gt; &lt;!-- end of row --&gt;
-        &lt;/div&gt; &lt;!-- end of container --&gt;
-    &lt;/header&gt; &lt;!-- end of ex-header --&gt;
-    &lt;!-- end of header --&gt;
-    &lt;!-- Details 1 --&gt;
-    &lt;div id=&quot;details&quot; class=&quot;basic-1&quot;&gt;
-        &lt;div class=&quot;container&quot;&gt;
-            &lt;div class=&quot;row&quot;&gt;
-                &lt;div class=&quot;col-md-9&quot;&gt;
-                    {include file=&quot;common/detail_content&quot; /}
-                &lt;/div&gt;
-                &lt;div class=&quot;col-md-3&quot;&gt;
-                    {include file=&quot;peruaddress/common/right&quot;}
-                &lt;/div&gt;
-            &lt;/div&gt;
-        &lt;/div&gt; &lt;!-- end of container --&gt;
-    &lt;/div&gt; &lt;!-- end of basic-1 --&gt;
-    &lt;!-- end of details 1 --&gt;
-    
-    {include file=&quot;peruaddress/common/footer&quot;}
-&lt;/body&gt;
-
-&lt;/html&gt;">&lt;!DOCTYPE html&gt;
-&lt;ht...</a>', '<a class="toggle" title="E:\SVNRepositories\AddressBaseGitPages\runtime\temp\3db8294497fe8e103cd232786c2c81df.php">E:\SVNRepositories\A...</a>') in <a class="toggle" title="E:\SVNRepositories\AddressBaseGitPages\thinkphp\library\think\Template.php line 182">Template.php line 182</a>                </li>
-                                <li>
-                at <abbr title="think\Template">Template</abbr>->fetch('<a class="toggle" title="E:\SVNRepositories\AddressBaseGitPages\public/../application/index\view\peruaddress\index\url_blog.html">E:\SVNRepositories\A...</a>', ['user' => <em>null</em>, 'site' => ['name' => 'ABGP', 'beian' => '', 'cdnurl' => '', ...], 'config' => ['site' => ['name' => 'ABGP', 'cdnurl' => '', 'version' => 1737118634, ...], 'upload' => ['cdnurl' => '', 'uploadurl' => '<a class="toggle" title="/index.php/index/ajax/upload">/index.php/index/aja...</a>', 'bucket' => 'local', ...], 'modulename' => 'index', ...], ...], []) in <a class="toggle" title="E:\SVNRepositories\AddressBaseGitPages\thinkphp\library\think\view\driver\Think.php line 86">Think.php line 86</a>                </li>
-                                <li>
-                at <abbr title="think\view\driver\Think">Think</abbr>->fetch('<a class="toggle" title="E:\SVNRepositories\AddressBaseGitPages\public/../application/index\view\peruaddress\index\url_blog.html">E:\SVNRepositories\A...</a>', ['user' => <em>null</em>, 'site' => ['name' => 'ABGP', 'beian' => '', 'cdnurl' => '', ...], 'config' => ['site' => ['name' => 'ABGP', 'cdnurl' => '', 'version' => 1737118634, ...], 'upload' => ['cdnurl' => '', 'uploadurl' => '<a class="toggle" title="/index.php/index/ajax/upload">/index.php/index/aja...</a>', 'bucket' => 'local', ...], 'modulename' => 'index', ...], ...], []) in <a class="toggle" title="E:\SVNRepositories\AddressBaseGitPages\thinkphp\library\think\View.php line 163">View.php line 163</a>                </li>
-                                <li>
-                at <abbr title="think\View">View</abbr>->fetch('<a class="toggle" title="peruaddress/index/url_blog">peruaddress/index/ur...</a>') in <a class="toggle" title="E:\SVNRepositories\AddressBaseGitPages\application\index\controller\Index.php line 457">Index.php line 457</a>                </li>
-                                <li>
-                at <abbr title="app\index\controller\Index">Index</abbr>->url_blog()                </li>
-                                <li>
-                at <abbr title="ReflectionMethod">ReflectionMethod</abbr>->invokeArgs(<em>object</em>(<abbr title="app\index\controller\Index">Index</abbr>), []) in <a class="toggle" title="E:\SVNRepositories\AddressBaseGitPages\thinkphp\library\think\App.php line 343">App.php line 343</a>                </li>
-                                <li>
-                at <abbr title="think\App">App</abbr>::invokeMethod([<em>object</em>(<abbr title="app\index\controller\Index">Index</abbr>), 'url_blog'], []) in <a class="toggle" title="E:\SVNRepositories\AddressBaseGitPages\thinkphp\library\think\App.php line 611">App.php line 611</a>                </li>
-                                <li>
-                at <abbr title="think\App">App</abbr>::module(['index', 'index', 'url_blog'], ['app_host' => '', 'app_debug' => <em>true</em>, 'app_trace' => <em>false</em>, ...], <em>true</em>) in <a class="toggle" title="E:\SVNRepositories\AddressBaseGitPages\thinkphp\library\think\App.php line 456">App.php line 456</a>                </li>
-                                <li>
-                at <abbr title="think\App">App</abbr>::exec(['type' => 'module', 'module' => ['index', 'index', 'url_blog']], ['app_host' => '', 'app_debug' => <em>true</em>, 'app_trace' => <em>false</em>, ...]) in <a class="toggle" title="E:\SVNRepositories\AddressBaseGitPages\thinkphp\library\think\App.php line 139">App.php line 139</a>                </li>
-                                <li>
-                at <abbr title="think\App">App</abbr>::run() in <a class="toggle" title="E:\SVNRepositories\AddressBaseGitPages\thinkphp\start.php line 19">start.php line 19</a>                </li>
-                                <li>
-                at require('<a class="toggle" title="E:\SVNRepositories\AddressBaseGitPages\thinkphp\start.php">E:\SVNRepositories\A...</a>') in <a class="toggle" title="E:\SVNRepositories\AddressBaseGitPages\public\index.php line 23">index.php line 23</a>                </li>
-                            </ol>
-        </div>
+                                        </div>
+                <div class="col-md-3">
+                    
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">热门文章</h3>
     </div>
-        
-    
-        <div class="exception-var">
-        <h2>Environment Variables</h2>
-                <div>
-                        <h3 class="subheading">GET Data</h3>
-            <div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>website_id</strong></div>
-                    <div class="col-md-9"><small>
-                        26                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>id</strong></div>
-                    <div class="col-md-9"><small>
-                        14938                    </small></div>
-                </div>
-                            </div>
-                    </div>
-                <div>
-                        <div class="clearfix">
-                <div class="col-md-3"><strong>POST Data</strong></div>
-                <div class="col-md-9"><small>empty</small></div>
-            </div>
-                    </div>
-                <div>
-                        <div class="clearfix">
-                <div class="col-md-3"><strong>Files</strong></div>
-                <div class="col-md-9"><small>empty</small></div>
-            </div>
-                    </div>
-                <div>
-                        <div class="clearfix">
-                <div class="col-md-3"><strong>Cookies</strong></div>
-                <div class="col-md-9"><small>empty</small></div>
-            </div>
-                    </div>
-                <div>
-                        <div class="clearfix">
-                <div class="col-md-3"><strong>Session</strong></div>
-                <div class="col-md-9"><small>empty</small></div>
-            </div>
-                    </div>
-                <div>
-                        <h3 class="subheading">Server/Request Data</h3>
-            <div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>ALLUSERSPROFILE</strong></div>
-                    <div class="col-md-9"><small>
-                        C:\ProgramData                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>APPDATA</strong></div>
-                    <div class="col-md-9"><small>
-                        C:\Windows\system32\config\systemprofile\AppData\Roaming                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>CommonProgramFiles</strong></div>
-                    <div class="col-md-9"><small>
-                        C:\Program Files\Common Files                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>CommonProgramFiles(x86)</strong></div>
-                    <div class="col-md-9"><small>
-                        C:\Program Files (x86)\Common Files                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>CommonProgramW6432</strong></div>
-                    <div class="col-md-9"><small>
-                        C:\Program Files\Common Files                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>COMPUTERNAME</strong></div>
-                    <div class="col-md-9"><small>
-                        DESKTOP-NSJC0E1                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>ComSpec</strong></div>
-                    <div class="col-md-9"><small>
-                        C:\Windows\system32\cmd.exe                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>DriverData</strong></div>
-                    <div class="col-md-9"><small>
-                        C:\Windows\System32\Drivers\DriverData                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>LOCALAPPDATA</strong></div>
-                    <div class="col-md-9"><small>
-                        C:\Windows\system32\config\systemprofile\AppData\Local                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>NUMBER_OF_PROCESSORS</strong></div>
-                    <div class="col-md-9"><small>
-                        6                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>OS</strong></div>
-                    <div class="col-md-9"><small>
-                        Windows_NT                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>Path</strong></div>
-                    <div class="col-md-9"><small>
-                                            </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>PATHEXT</strong></div>
-                    <div class="col-md-9"><small>
-                        .COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>PROCESSOR_ARCHITECTURE</strong></div>
-                    <div class="col-md-9"><small>
-                        AMD64                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>PROCESSOR_IDENTIFIER</strong></div>
-                    <div class="col-md-9"><small>
-                        Intel64 Family 6 Model 158 Stepping 10, GenuineIntel                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>PROCESSOR_LEVEL</strong></div>
-                    <div class="col-md-9"><small>
-                        6                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>PROCESSOR_REVISION</strong></div>
-                    <div class="col-md-9"><small>
-                        9e0a                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>ProgramData</strong></div>
-                    <div class="col-md-9"><small>
-                        C:\ProgramData                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>ProgramFiles</strong></div>
-                    <div class="col-md-9"><small>
-                        C:\Program Files                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>ProgramFiles(x86)</strong></div>
-                    <div class="col-md-9"><small>
-                        C:\Program Files (x86)                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>ProgramW6432</strong></div>
-                    <div class="col-md-9"><small>
-                        C:\Program Files                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>PSModulePath</strong></div>
-                    <div class="col-md-9"><small>
-                        C:\Program Files\WindowsPowerShell\Modules;C:\Windows\system32\WindowsPowerShell\v1.0\Modules                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>PUBLIC</strong></div>
-                    <div class="col-md-9"><small>
-                        C:\Users\Public                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>SystemDrive</strong></div>
-                    <div class="col-md-9"><small>
-                        C:                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>SystemRoot</strong></div>
-                    <div class="col-md-9"><small>
-                        C:\Windows                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>TEMP</strong></div>
-                    <div class="col-md-9"><small>
-                        C:\Windows\TEMP                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>TMP</strong></div>
-                    <div class="col-md-9"><small>
-                        C:\Windows\TEMP                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>USERDOMAIN</strong></div>
-                    <div class="col-md-9"><small>
-                        WORKGROUP                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>USERNAME</strong></div>
-                    <div class="col-md-9"><small>
-                        DESKTOP-NSJC0E1$                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>USERPROFILE</strong></div>
-                    <div class="col-md-9"><small>
-                        C:\Windows\system32\config\systemprofile                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>windir</strong></div>
-                    <div class="col-md-9"><small>
-                        C:\Windows                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>HTTP_ACCEPT</strong></div>
-                    <div class="col-md-9"><small>
-                        */*                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>HTTP_USER_AGENT</strong></div>
-                    <div class="col-md-9"><small>
-                        Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.98 Safari/537.36                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>HTTP_HOST</strong></div>
-                    <div class="col-md-9"><small>
-                        abgp.com                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>REDIRECT_STATUS</strong></div>
-                    <div class="col-md-9"><small>
-                        200                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>SERVER_NAME</strong></div>
-                    <div class="col-md-9"><small>
-                        abgp.com                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>SERVER_PORT</strong></div>
-                    <div class="col-md-9"><small>
-                        80                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>SERVER_ADDR</strong></div>
-                    <div class="col-md-9"><small>
-                        127.0.0.1                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>REMOTE_PORT</strong></div>
-                    <div class="col-md-9"><small>
-                        52875                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>REMOTE_ADDR</strong></div>
-                    <div class="col-md-9"><small>
-                        127.0.0.1                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>SERVER_SOFTWARE</strong></div>
-                    <div class="col-md-9"><small>
-                        nginx/1.15.11                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>GATEWAY_INTERFACE</strong></div>
-                    <div class="col-md-9"><small>
-                        CGI/1.1                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>REQUEST_SCHEME</strong></div>
-                    <div class="col-md-9"><small>
-                        http                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>SERVER_PROTOCOL</strong></div>
-                    <div class="col-md-9"><small>
-                        HTTP/1.1                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>DOCUMENT_ROOT</strong></div>
-                    <div class="col-md-9"><small>
-                        E:/SVNRepositories/AddressBaseGitPages/public                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>DOCUMENT_URI</strong></div>
-                    <div class="col-md-9"><small>
-                        /index.php/index/index/url_blog                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>REQUEST_URI</strong></div>
-                    <div class="col-md-9"><small>
-                        /index.php/index/index/url_blog?website_id=26&amp;id=14938                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>SCRIPT_NAME</strong></div>
-                    <div class="col-md-9"><small>
-                        /index.php                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>CONTENT_LENGTH</strong></div>
-                    <div class="col-md-9"><small>
-                                            </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>CONTENT_TYPE</strong></div>
-                    <div class="col-md-9"><small>
-                                            </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>REQUEST_METHOD</strong></div>
-                    <div class="col-md-9"><small>
-                        GET                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>QUERY_STRING</strong></div>
-                    <div class="col-md-9"><small>
-                        website_id=26&amp;id=14938                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>PATH_TRANSLATED</strong></div>
-                    <div class="col-md-9"><small>
-                        E:/SVNRepositories/AddressBaseGitPages/public/index/index/url_blog                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>PATH_INFO</strong></div>
-                    <div class="col-md-9"><small>
-                        /index/index/url_blog                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>SCRIPT_FILENAME</strong></div>
-                    <div class="col-md-9"><small>
-                        E:/SVNRepositories/AddressBaseGitPages/public/index.php                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>FCGI_ROLE</strong></div>
-                    <div class="col-md-9"><small>
-                        RESPONDER                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>PHP_SELF</strong></div>
-                    <div class="col-md-9"><small>
-                        /index.php/index/index/url_blog                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>REQUEST_TIME_FLOAT</strong></div>
-                    <div class="col-md-9"><small>
-                        1737118634.3355                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>REQUEST_TIME</strong></div>
-                    <div class="col-md-9"><small>
-                        1737118634                    </small></div>
-                </div>
-                            </div>
-                    </div>
-                <div>
-                        <div class="clearfix">
-                <div class="col-md-3"><strong>Environment Variables</strong></div>
-                <div class="col-md-9"><small>empty</small></div>
-            </div>
-                    </div>
-                <div>
-                        <h3 class="subheading">ThinkPHP Constants</h3>
-            <div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>APP_PATH</strong></div>
-                    <div class="col-md-9"><small>
-                        E:\SVNRepositories\AddressBaseGitPages\public/../application/                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>THINK_VERSION</strong></div>
-                    <div class="col-md-9"><small>
-                        5.0.26                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>THINK_START_TIME</strong></div>
-                    <div class="col-md-9"><small>
-                        1737118634.336                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>THINK_START_MEM</strong></div>
-                    <div class="col-md-9"><small>
-                        408960                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>EXT</strong></div>
-                    <div class="col-md-9"><small>
-                        .php                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>DS</strong></div>
-                    <div class="col-md-9"><small>
-                        \                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>THINK_PATH</strong></div>
-                    <div class="col-md-9"><small>
-                        E:\SVNRepositories\AddressBaseGitPages\thinkphp\                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>LIB_PATH</strong></div>
-                    <div class="col-md-9"><small>
-                        E:\SVNRepositories\AddressBaseGitPages\thinkphp\library\                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>CORE_PATH</strong></div>
-                    <div class="col-md-9"><small>
-                        E:\SVNRepositories\AddressBaseGitPages\thinkphp\library\think\                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>TRAIT_PATH</strong></div>
-                    <div class="col-md-9"><small>
-                        E:\SVNRepositories\AddressBaseGitPages\thinkphp\library\traits\                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>ROOT_PATH</strong></div>
-                    <div class="col-md-9"><small>
-                        E:\SVNRepositories\AddressBaseGitPages\                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>EXTEND_PATH</strong></div>
-                    <div class="col-md-9"><small>
-                        E:\SVNRepositories\AddressBaseGitPages\extend\                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>VENDOR_PATH</strong></div>
-                    <div class="col-md-9"><small>
-                        E:\SVNRepositories\AddressBaseGitPages\vendor\                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>RUNTIME_PATH</strong></div>
-                    <div class="col-md-9"><small>
-                        E:\SVNRepositories\AddressBaseGitPages\runtime\                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>LOG_PATH</strong></div>
-                    <div class="col-md-9"><small>
-                        E:\SVNRepositories\AddressBaseGitPages\runtime\log\                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>CACHE_PATH</strong></div>
-                    <div class="col-md-9"><small>
-                        E:\SVNRepositories\AddressBaseGitPages\runtime\cache\                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>TEMP_PATH</strong></div>
-                    <div class="col-md-9"><small>
-                        E:\SVNRepositories\AddressBaseGitPages\runtime\temp\                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>CONF_PATH</strong></div>
-                    <div class="col-md-9"><small>
-                        E:\SVNRepositories\AddressBaseGitPages\public/../application/                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>CONF_EXT</strong></div>
-                    <div class="col-md-9"><small>
-                        .php                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>ENV_PREFIX</strong></div>
-                    <div class="col-md-9"><small>
-                        PHP_                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>IS_CLI</strong></div>
-                    <div class="col-md-9"><small>
-                        false                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>IS_WIN</strong></div>
-                    <div class="col-md-9"><small>
-                        true                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>FILTER_VALIDATE_BOOL</strong></div>
-                    <div class="col-md-9"><small>
-                        258                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>HTMLPURIFIER_PREFIX</strong></div>
-                    <div class="col-md-9"><small>
-                        E:\SVNRepositories\AddressBaseGitPages\vendor\ezyang\htmlpurifier\library                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>ADDON_PATH</strong></div>
-                    <div class="col-md-9"><small>
-                        E:\SVNRepositories\AddressBaseGitPages\addons\                    </small></div>
-                </div>
-                            </div>
-                    </div>
-            </div>
-    
-    <div class="copyright">
-        <a title="官方网站" href="http://www.thinkphp.cn">ThinkPHP</a> 
-        <span>V5.0.26</span> 
-        <span>{ 十年磨一剑-为API开发设计的高性能框架 }</span>
+    <div class="panel-body">
+        <ul class="p-0 x-0" style="list-style: none;margin: 0;padding: 0;">
+                        <li class="py-2"><a href="/html/category/article-14947.htm" title="宠物狗领养,求爱心人士（找好心人领养狗狗）">宠物狗领养,求爱心人士（找好心人领养狗狗）</a></li>
+                        <li class="py-2"><a href="/html/category/article-14954.htm" title="宠物美容师（宠物美容师资格证怎么考）">宠物美容师（宠物美容师资格证怎么考）</a></li>
+                        <li class="py-2"><a href="/html/category/article-14943.htm" title="淮南有哪些好玩的景点不收费(淮南有哪些好玩的景点推荐一下)">淮南有哪些好玩的景点不收费(淮南有哪些好玩的景点推荐一下)</a></li>
+                        <li class="py-2"><a href="/html/category/article-14945.htm" title="猫咪打疫苗打几针多少钱一针啊（猫咪打疫苗要多少钱一针）">猫咪打疫苗打几针多少钱一针啊（猫咪打疫苗要多少钱一针）</a></li>
+                        <li class="py-2"><a href="/html/category/article-14949.htm" title="2020年男士品牌衣服排行榜(有哪些男士衣服品牌)">2020年男士品牌衣服排行榜(有哪些男士衣服品牌)</a></li>
+                        <li class="py-2"><a href="/html/category/article-14959.htm" title="闲鱼怎么做无货源赚钱怎么发货（闲鱼无货源赚钱怎么发货给买家）">闲鱼怎么做无货源赚钱怎么发货（闲鱼无货源赚钱怎么发货给买家）</a></li>
+                        <li class="py-2"><a href="/html/category/article-14944.htm" title="宠物粮加工需要多少钱一斤呢 宠物粮加工需要多少钱一斤呢图片">宠物粮加工需要多少钱一斤呢 宠物粮加工需要多少钱一斤呢图片</a></li>
+                        <li class="py-2"><a href="/html/category/article-14964.htm" title="我们城市里有一个宠物医院用英语怎么写（在我们城市里有一家宠物医院用英语怎么说）">我们城市里有一个宠物医院用英语怎么写（在我们城市里有一家宠物医院用英语怎么说）</a></li>
+                        <li class="py-2"><a href="/html/category/article-14955.htm" title="同安宠物领养中心地址电话多少（同安宠物领养中心地址电话多少号）">同安宠物领养中心地址电话多少（同安宠物领养中心地址电话多少号）</a></li>
+                        <li class="py-2"><a href="/html/category/article-14938.htm" title="丹阳犬类收容中心（丹阳犬类收容中心电话）">丹阳犬类收容中心（丹阳犬类收容中心电话）</a></li>
+                    </ul>
     </div>
-        <script>
-        var LINE = 1074;
+</div>
 
-        function $(selector, node){
-            var elements;
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">归纳</h3>
+    </div>
+    <div class="panel-body">
+        <ul class="p-0 x-0" style="list-style: none;margin: 0;padding: 0;">
+                        <li class="py-2">
+                <h4><span class="badge" style="float: right;">34</span> <a href="/date/2025-01/" title="2025-01 归档">2025-01</a></h4>
+            </li>
+                    </ul>
+    </div>
+</div>
 
-            node = node || document;
-            if(document.querySelectorAll){
-                elements = node.querySelectorAll(selector);
-            } else {
-                switch(selector.substr(0, 1)){
-                    case '#':
-                        elements = [node.getElementById(selector.substr(1))];
-                        break;
-                    case '.':
-                        if(document.getElementsByClassName){
-                            elements = node.getElementsByClassName(selector.substr(1));
-                        } else {
-                            elements = get_elements_by_class(selector.substr(1), node);
-                        }
-                        break;
-                    default:
-                        elements = node.getElementsByTagName();
-                }
-            }
-            return elements;
 
-            function get_elements_by_class(search_class, node, tag) {
-                var elements = [], eles, 
-                    pattern  = new RegExp('(^|\\s)' + search_class + '(\\s|$)');
+                </div>
+            </div>
+        </div> <!-- end of container -->
+    </div> <!-- end of basic-1 -->
+    <!-- end of details 1 -->
+    
+        <!-- Copyright -->
+    <div class="copyright bg-gray">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <ul class="list-unstyled li-space-lg p-small">
+                        <li><a href="#">Article Details</a></li>
+                        <li><a href="#">Terms & Conditions</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div> <!-- end of col -->
+                <div class="col-lg-6">
+                            <p>
+                                <a href="/">首页</a> | 
+                                <a href="/free-node/">免费节点</a> | 
+                                <a href="/news/">新闻资讯</a> |
+                                <a href="/about-us.htm">关于我们</a> |
+                                <a href="/disclaimer.htm">免责申明</a> |
+                                <a href="/privacy.htm">隐私申明</a> |
+                                <a href="/sitemap.xml">网站地图</a>
+                            </p>
+                    <p>
+                        <a href="/">Peru Address</a> 版权所有 Powered by WordPress
+                    </p>
+                </div> <!-- end of col -->
+            </div> <!-- enf of row -->
+        </div> <!-- end of container -->
+    </div> <!-- end of copyright -->
+    <!-- end of copyright -->
+    <!-- Back To Top Button -->
+    <button onclick="topFunction()" id="myBtn">
+        <img href="/assets/website/img/peruaddress/up-arrow.png" alt="alternative">
+    </button>
+    <!-- end of back to top button -->
+    <!-- Scripts -->
+    <script src="/assets/website/js/frontend/peruaddress/jquery-3.5.1.min.js"></script>
+    <script src="/assets/website/js/frontend/peruaddress/bootstrap.min.js"></script> <!-- Bootstrap framework -->
+    <script src="/assets/website/js/frontend/peruaddress/swiper.min.js"></script> <!-- Swiper for image and text sliders -->
+    <script src="/assets/website/js/frontend/peruaddress/purecounter.min.js"></script> <!-- Purecounter counter for statistics numbers -->
+    <script src="/assets/website/js/frontend/peruaddress/isotope.pkgd.min.js"></script> <!-- Isotope for filter -->
+    <script src="/assets/website/js/frontend/peruaddress/scripts.js"></script> <!-- Custom scripts -->
+    <script src="https://www.freeclashnode.com/assets/js/frontend/invite-url.js"></script><script src="/assets/website/js/frontend/G.js"></script>
+</body>
 
-                node = node || document;
-                tag  = tag  || '*';
-
-                eles = node.getElementsByTagName(tag);
-                for(var i = 0; i < eles.length; i++) {
-                    if(pattern.test(eles[i].className)) {
-                        elements.push(eles[i])
-                    }
-                }
-
-                return elements;
-            }
-        }
-
-        $.getScript = function(src, func){
-            var script = document.createElement('script');
-            
-            script.async  = 'async';
-            script.src    = src;
-            script.onload = func || function(){};
-            
-            $('head')[0].appendChild(script);
-        }
-
-        ;(function(){
-            var files = $('.toggle');
-            var ol    = $('ol', $('.prettyprint')[0]);
-            var li    = $('li', ol[0]);   
-
-            // 短路径和长路径变换
-            for(var i = 0; i < files.length; i++){
-                files[i].ondblclick = function(){
-                    var title = this.title;
-
-                    this.title = this.innerHTML;
-                    this.innerHTML = title;
-                }
-            }
-
-            // 设置出错行
-            var err_line = $('.line-' + LINE, ol[0])[0];
-            err_line.className = err_line.className + ' line-error';
-
-            $.getScript('//cdn.bootcss.com/prettify/r298/prettify.min.js', function(){
-                prettyPrint();
-
-                // 解决Firefox浏览器一个很诡异的问题
-                // 当代码高亮后，ol的行号莫名其妙的错位
-                // 但是只要刷新li里面的html重新渲染就没有问题了
-                if(window.navigator.userAgent.indexOf('Firefox') >= 0){
-                    ol[0].innerHTML = ol[0].innerHTML;
-                }
-            });
-
-        })();
-    </script>
-    </body>
 </html>
